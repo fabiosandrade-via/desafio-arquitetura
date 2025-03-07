@@ -1,0 +1,31 @@
+<div class="container">
+  <h2>Cadastro de Lançamento</h2>
+  <form [formGroup]="lancamentoForm" (ngSubmit)="adicionarLancamento()">
+    <label for="tipo">Tipo:</label>
+    <select formControlName="tipo">
+      <option value="credito">Crédito</option>
+      <option value="debito">Débito</option>
+    </select>
+
+    <label for="valor">Valor:</label>
+    <input type="number" formControlName="valor" />
+
+    <label for="descricao">Descrição:</label>
+    <input type="text" formControlName="descricao" />
+
+    <label for="data">Data:</label>
+    <input type="datetime-local" formControlName="data" />
+
+    <button type="submit" [disabled]="!lancamentoForm.valid">Adicionar</button>
+  </form>
+
+  <h3>Lista de Lançamentos</h3>
+  <ul>
+    <li *ngFor="let lancamento of lancamentos">
+      {{ lancamento.tipo | uppercase }} - R${{ lancamento.valor }} - {{ lancamento.descricao }} - {{ lancamento.data | date:'dd/MM/yyyy HH:mm:ss' }}
+    </li>
+  </ul>
+  <button type="button" (click)="salvarLancamentos()" [disabled]="lancamentos.length === 0">
+    Salvar Lançamentos
+  </button>
+</div>

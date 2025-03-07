@@ -1,0 +1,34 @@
+<div class="container">    
+    <h2>Consolidado Diário</h2>
+    <form [formGroup]="consolidadoForm" (ngSubmit)="consultarConsolidado()">
+        <label for="data">Busca pela data do lançamento:</label>
+        <input type="date" formControlName="data"/>
+        <button type="submit" [disabled]="!consolidadoForm.valid">
+            Consultar
+        </button>  
+    </form>
+    <br>
+
+    <p *ngIf="mensagem">{{ mensagem }}</p>
+  
+    <table *ngIf="lancamentos.length > 0" border="1">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Descrição</th>
+                <th>Data do Lançamento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let lancamento of lancamentos">
+                <td>{{ exibirTipoFormatado(lancamento.tipo) }}</td>
+                <td>R$ {{ lancamento.valor | number:'1.2-2' }}</td> 
+                <td>{{ lancamento.descricao }}</td>
+                <td>{{ lancamento.dataLancamento | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+            </tr>
+        </tbody>
+    </table>
+  
+    <p *ngIf="lancamentos.length > 0"><strong>Saldo Acumulado:</strong> R$ {{ acumulado | number:'1.2-2' }}</p>     
+</div>
