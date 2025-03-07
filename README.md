@@ -42,6 +42,41 @@ Gostaria de ter implementado, porém devido a falta de infraestrutura, budget e 
 
 ---
 
+## 💡 FinOps dos serviços/tecnologias das aplicações de fluxo de caixa num cenário Google Cloud Platform (GCP)
+
+- ✅ **Google Kubernetes Engine (GKE):** Microserviços;
+- ✅ **Cloud Load Balancer:** Distribuição de tráfego entre instâncias;
+- ✅ **Cloud SQL - MongoDB:** Armazenamento de dados;
+- ✅ **Cloud Memorystore (Redis):** Cache para otimização de performance;
+- ✅ **Cloud Pub/Sub (Kafka gerenciado):** Mensageria assíncrona;
+- ✅ **Cloud Monitoring & Logging (Prometheus + Grafana):** Monitoramento;
+- ✅ **Cloud Build & Artifact Registry:**  CI/CD e armazenamento de imagens Docker.
+
+## 💰 Estimativa de Custos em dólar na Google Cloud Platform (GCP)
+
+| Serviço                         | Especificação                           | Uso Mensal       | Estimativa ($ USD) |
+|---------------------------------|----------------------------------------|-----------------|--------------------|
+| **Google Kubernetes Engine (GKE)** | 3 nós (4 vCPUs, 16GB RAM cada)         | 730 horas       | $400 - $600        |
+| **Cloud Load Balancer**          | Balanceamento global                   | 10 TB tráfego   | $20 - $50          |
+| **Cloud SQL** (MongoDB Atlas) | Instância de 2 vCPUs, 8GB RAM         | 730 horas       | $100 - $200        |
+| **Cloud Pub/Sub** (Kafka gerenciado) | 5 milhões de mensagens/mês           | Variável        | $50 - $100         |
+| **Cloud Memorystore (Redis)**     | 1 instância (4GB)                      | 730 horas       | $50 - $80          |
+| **Cloud Monitoring & Logging**    | Coleta e armazenamento                 | 5TB logs/mês    | $30 - $50          |
+| **Cloud Storage**                 | 500GB armazenamento                     | Variável        | $20 - $40          |
+| **Cloud Build & Artifact Registry** | CI/CD e repositório Docker             | 100 builds/mês  | $10 - $30          |
+| **Tráfego de saída (Egress Traffic)** | Para APIs e usuários externos          | 10TB/mês       | $100 - $200        |
+
+## 📌 **Estimativa Total**:
+💰 **$800 - $1.350/mês**, dependendo do tráfego e do uso de recursos.
+
+---
+#### **Outras possíveis abordagens poderiam contemplar a substituição dos serviços listados acima sendo contratados diretamente com as empresas detentoras das tecnologias. SaaS e PaaS como Alternativas mais econômicas.**
+**Exemplos:**
+- Usar MongoDB Atlas diretamente ao invés de Cloud SQL;
+- Confluent Cloud (Kafka como SaaS) no lugar de Cloud Pub/Sub;
+- Alternativas serverless, como Upstash Redis (pay-as-you-go) ao invés de Cloud Memorystore.
+---
+
 ## 📁 Estrutura do Projeto
 
 ```
