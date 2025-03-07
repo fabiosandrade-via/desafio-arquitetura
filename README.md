@@ -73,8 +73,7 @@ Gostaria de ter implementado, porém devido a falta de infraestrutura, budget e 
 #### **Outras possíveis abordagens poderiam contemplar a substituição dos serviços listados acima sendo contratados diretamente com as empresas detentoras das tecnologias. SaaS e PaaS como Alternativas mais econômicas.**
 **Exemplos:**
 - Usar MongoDB Atlas diretamente ao invés de Cloud SQL;
-- Confluent Cloud (Kafka como SaaS) no lugar de Cloud Pub/Sub;
-- Alternativas serverless, como Upstash Redis (pay-as-you-go) ao invés de Cloud Memorystore.
+- Confluent Cloud (Kafka como SaaS) no lugar de Cloud Pub/Sub.
 ---
 
 ## 📁 Estrutura do Projeto
