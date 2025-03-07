@@ -6,7 +6,7 @@ Este projeto tem como objetivo fornecer uma plataforma para lançamento e consol
 
 ### **🔴 Pontos de atenção**
 
-Gostaria de ter implementado, porém devido a falta de infraestrutura, budget e tempo para entrega, não foram implementadas conforme o desenho arquitetural os componentes referentes as tecnologias listadas abaixo:
+Gostaria de ter implementado, porém devido a falta de infraestrutura, budget e tempo para entrega, **não estão contemplados conforme o desenho arquitetural** os componentes referentes as tecnologias listadas abaixo:
  - Akamai;
  - Subida em cloud;
  - Pipeline CI/CD;
