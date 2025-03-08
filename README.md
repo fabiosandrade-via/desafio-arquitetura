@@ -118,7 +118,7 @@ Gostaria de ter implementado, porém devido a falta de infraestrutura, budget e 
 ├── docker-compose.yml
 ├── README.md
 ```
-#### NOTA: Foram consideradas na camada de repositório a utilização de Migrations para o MongoDB, Polly para aplicação de Retry e CircuitBreaker na camada de serviço para resiliência na comunicação entre os microserviços e Kafka para fallover.
+##### NOTA: Foram consideradas na camada de repositório a utilização de Migrations para o MongoDB, Polly para aplicação de Retry e CircuitBreaker na camada de serviço para resiliência na comunicação entre os microserviços e Kafka para fallover.
 ---
 
 ## 🛠️ Configuração e Execução do Projeto
