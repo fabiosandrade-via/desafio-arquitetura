@@ -6,7 +6,7 @@ Este projeto tem como objetivo fornecer uma plataforma para lançamento e consol
 
 ### **🔴 Pontos de atenção**
 
-Gostaria de ter implementado, porém devido a falta de infraestrutura, budget e tempo para entrega, **não estão contemplados conforme o desenho arquitetural** os componentes referentes as tecnologias listadas abaixo:
+Gostaria de ter implementado, porém devido a falta de infraestrutura, budget e tempo para entrega, **não estão contemplados conforme o desenho arquitetural** os componentes/recursos referentes as tecnologias listadas abaixo:
  - Akamai;
  - Subida em cloud;
  - Pipeline CI/CD;
@@ -34,7 +34,7 @@ Gostaria de ter implementado, porém devido a falta de infraestrutura, budget e 
 
 - **Angular 19, TypeScript, RxJS, Angular Forms:** Permite a reutilização de componentes, melhorando a organização e manutenção do código.
 - **.NET Core 8 (dois microserviços):** Estruturado em dois microserviços independentes, arquitetura baseada em microserviços permitindo escalar individualmente. Funciona em Windows, Linux e MacOS cada serviço na qual o código é modular, fácil manutenção e integração com múltiplos serviços.
-- **MongoDB:** Suporte a dados dinâmicos, sem necessidade de esquemas rígidos além de gilidade no armazenamento e recuperação de dados sem comprometer o desempenho.
+- **MongoDB:** Suporte a dados dinâmicos, sem necessidade de esquemas rígidos além de gilidade no armazenamento e recuperação de dados sem comprometer o desempenho. O objetivo é gravar os lançamentos indendemente da disponibilidade do microserviço consolidado, pois os dados do mongo servirão como histórico para buscar o que já foi lançado adicionado aos novos lançamentos que vem da tela.
 - **Redis:** Pensando na alta disponibilidade de relatório do fluxo de caixa tem baixa latência, escalabilidade resultando na diminuição da carga sobre o banco de dados, melhorando a performance da aplicação
 - **Kafka:** Foi escolhido na utilização no contexto de indisponibilidade do serviço de consolidado-diario. Caso ocorra, será realizada comunicação assíncrona entre os microserviços. A execução do serviço consumidor é feita de forma independente da API rodando em background (HostedService).
 - **Prometheus e Grafana:** Considero como ferramentas player de mercado para monitorarento de métricas e logs da aplicação além do bom custo benefício.
@@ -118,7 +118,7 @@ Gostaria de ter implementado, porém devido a falta de infraestrutura, budget e 
 ├── docker-compose.yml
 ├── README.md
 ```
-
+#### NOTA: Foram consideradas na camada de repositório a utilização de Migrations para o MongoDB, Polly para aplicação de Retry e CircuitBreaker na camada de serviço para resiliência na comunicação entre os microserviços e Kafka para fallover.
 ---
 
 ## 🛠️ Configuração e Execução do Projeto

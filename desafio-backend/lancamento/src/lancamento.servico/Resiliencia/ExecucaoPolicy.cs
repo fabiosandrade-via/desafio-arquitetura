@@ -10,9 +10,9 @@ namespace lancamento.servico.Resiliencia
         {
             _apiExterna = apiExterna;
         }
-        public async Task ExecutarResilienciaApiAsync(List<LancamentoEntity> lancamentosEntity)
+        public async Task ExecutarResilienciaApiAsync(List<LancamentoGrupoEntity> lancamentosAgrupados)
         {
-            await CriacaoPolicy.AplicarPolitica().ExecuteAsync(() => _apiExterna.EnviarLancamentosApiExternaAsync(lancamentosEntity));
+            await CriacaoPolicy.AplicarPolitica().ExecuteAsync(() => _apiExterna.EnviarLancamentosApiExternaAsync(lancamentosAgrupados));
         }
     }
 }

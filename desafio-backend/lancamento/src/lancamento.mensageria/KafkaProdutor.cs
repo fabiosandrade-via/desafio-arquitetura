@@ -12,7 +12,7 @@ namespace lancamento.messagebroker
         {
             _settings = settings;
         }
-        public async Task Enviar(List<LancamentoEntity> lancamentos)
+        public async Task Enviar(List<LancamentoGrupoEntity> lancamentos)
         {
             var config = new ProducerConfig
             {

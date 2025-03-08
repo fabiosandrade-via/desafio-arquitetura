@@ -9,6 +9,8 @@ using lancamento.repositorio;
 using lancamento.repositorio.MongoDB;
 using lancamento.servico;
 using lancamento.servico.Interfaces;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using Prometheus;
 using Serilog;
 using System.Net;
@@ -28,6 +30,14 @@ builder.Services.AddCors(options =>
 
 builder.WebHost.UseUrls("http://0.0.0.0:80");
 
+var env = builder.Environment;
+
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -44,10 +54,23 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/logLancamentos.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
+builder.Services.AddSingleton<IMongoClient>(sp =>
+{
+    var mongoDbSettings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var client = new MongoClient(mongoDbSettings.ConnectionString);
+    return client;
+});
+builder.Services.AddSingleton(sp =>
+{
+    var client = sp.GetRequiredService<IMongoClient>();
+    return client.GetDatabase("admin");
+});
+
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDbSettings"));
 
 builder.Services.AddSingleton<MongoDbContext>();
+builder.Services.AddSingleton<MongoMigration>();
 
 builder.Services.Configure<KafkaSettings>(
     builder.Configuration.GetSection("KafkaSettings"));
@@ -65,6 +88,10 @@ IMapper mapper = configMapper.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
+
+var migration = app.Services.GetRequiredService<MongoMigration>();
+await migration.CriarColecaoSeNaoExisteAsync();
+await migration.AdicionarExemploDataAsync();
 
 app.UseCors("AllowAll");
 

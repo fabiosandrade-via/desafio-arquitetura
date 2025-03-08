@@ -27,7 +27,7 @@ namespace lancamento.repositorio
                 _logger.LogError(ex, "Erro ao tentar adicionar os lançamentos no banco de dados.");
             }
         }
-        public async Task<LancamentoGrupoEntity> BuscarPorIdAsync(DateTime id)
+        public async Task<LancamentoGrupoEntity> BuscarPorIdAsync(DateTime? id)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace lancamento.repositorio
                 throw;
             }
         }
-        public async Task ExcluirPorIdAsync(DateTime id)
+        public async Task ExcluirPorIdAsync(DateTime? id)
         {
             try
             {

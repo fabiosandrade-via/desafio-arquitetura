@@ -5,6 +5,7 @@ using lancamento.dominio.Interfaces;
 using lancamento.messagebroker;
 using lancamento.servico.Interfaces;
 using lancamento.servico.Resiliencia;
+using lancamento.servico.Uteis;
 using Microsoft.Extensions.Options;
 
 namespace lancamento.servico
@@ -21,23 +22,36 @@ namespace lancamento.servico
             _repositorio = repositorio;
             _apiExterna = apiExterna;
             _mapper = mapper;
-            _settings = settings; 
+            _settings = settings;
         }
         public async Task AdicionarAsync(List<LancamentoDTO> lancamentosDTO)
         {
             var lancamentosEntity = _mapper.Map<List<LancamentoEntity>>(lancamentosDTO);
-            var dataLanc = DateTime.Today;
+            List<LancamentoGrupoEntity> lancamentosAgrupados = await new ClassificaLancamentos(lancamentosEntity).RetornaLancamentosAgrupados();
+            List<LancamentoGrupoEntity> lancamentosAgrupadosEntity = new List<LancamentoGrupoEntity>();
 
-            LancamentoGrupoEntity req = await _repositorio.BuscarPorIdAsync(dataLanc);
-
-            if (req.Id != null)
+            foreach (var lancamentoAgrupado in lancamentosAgrupados)
             {
-                await _repositorio.ExcluirPorIdAsync(dataLanc);
-                lancamentosEntity.AddRange(req.Lancamentos);
+                DateTime? dataOriginal = lancamentoAgrupado.Id?.Date;
+                lancamentoAgrupado.Id = dataOriginal;
+                DateTime? dataLancamento = dataOriginal;
+
+                if (lancamentoAgrupado.Id.HasValue)
+                    dataLancamento = lancamentoAgrupado.Id.Value.Date;
+
+                LancamentoGrupoEntity req = await _repositorio.BuscarPorIdAsync(dataLancamento);
+
+                if (req.Id != null)
+                {
+                    await _repositorio.ExcluirPorIdAsync(dataLancamento);
+                    lancamentoAgrupado.Lancamentos.AddRange(req.Lancamentos);
+                }
+
+                lancamentosAgrupadosEntity.Add(lancamentoAgrupado);
+                await _repositorio.AdicionarLancamentosAsync(lancamentoAgrupado);
             }
 
-            await _repositorio.AdicionarLancamentosAsync(new LancamentoGrupoEntity() { Id = dataLanc, Lancamentos = lancamentosEntity});
-            await new AplicacaoResiliencia(_settings).EnviarLancamentosApiExterna(lancamentosEntity, _apiExterna);
-        }       
+            await new AplicacaoResiliencia(_settings).EnviarLancamentosApiExterna(lancamentosAgrupadosEntity, _apiExterna);
+        }
     }
 }

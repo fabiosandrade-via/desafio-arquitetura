@@ -26,6 +26,14 @@ builder.Services.AddCors(options =>
 
 builder.WebHost.UseUrls("http://0.0.0.0:80");
 
+var env = builder.Environment;
+
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .Enrich.WithCorrelationId()
@@ -75,11 +83,11 @@ app.UseHttpMetrics();
 
 app.MapGet("/", () => "Aplicação cnosolidado diário .NET 8 Monitorada com Prometheus e Grafana!");
 
-app.MapPost("api/lancamentos/consolidado", async (List<LancamentoDTO> lancamentosDTO, IConsolidadoServico servico) =>
+app.MapPost("api/lancamentos/consolidado", async (List<LancamentoGrupoDTO> lancamentoAgrupado, IConsolidadoServico servico) =>
 {
     try
     {
-        await servico.AdicionarLancamentosAsync(lancamentosDTO);
+        await servico.AdicionarLancamentosAsync(lancamentoAgrupado);
         return HttpStatusCode.OK;
     }
     catch

@@ -28,7 +28,7 @@ namespace consolidado.messagebroker
 
             var config = new ConsumerConfig
             {
-                BootstrapServers = settings.Value.BootstrapServers, //"localhost:9092",
+                BootstrapServers = settings.Value.BootstrapServers,
                 GroupId = "grupo-consumidor",
                 AutoOffsetReset = AutoOffsetReset.Latest
             };
@@ -39,7 +39,7 @@ namespace consolidado.messagebroker
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Consumidor Kafka iniciado.");
-            List<LancamentoDTO>? lancamentos = new List<LancamentoDTO>();
+            List<LancamentoGrupoDTO>? lancamentosAgrupados = new List<LancamentoGrupoDTO>();
 
             await Task.Run(() =>
             {
@@ -50,22 +50,22 @@ namespace consolidado.messagebroker
                         try
                         {
                             var consumeResult = _consumer.Consume(stoppingToken);
-                            List<LancamentoDTO>? lancamentosConsumidor = null;
+                            List<LancamentoGrupoDTO>? lancamentosConsumidor = null;
 
                             if (consumeResult.Message.Value != null)
                             {
-                                lancamentosConsumidor = JsonConvert.DeserializeObject<List<LancamentoDTO>>(consumeResult.Message.Value);
+                                lancamentosConsumidor = JsonConvert.DeserializeObject<List<LancamentoGrupoDTO>>(consumeResult.Message.Value);
 
                                 if (lancamentosConsumidor != null)
-                                    lancamentos.AddRange(lancamentosConsumidor);
+                                    lancamentosAgrupados.AddRange(lancamentosConsumidor);
                             }
 
                             if (lancamentosConsumidor != null)
                             {
                                 _logger.LogInformation($"Mensagem recebida: {consumeResult.Message.Value}");
 
-                                if (lancamentos.Count > 0)
-                                    _ = _consolidadoServico.AdicionarLancamentosAsync(lancamentos);
+                                if (lancamentosAgrupados.Count > 0)
+                                    _ = _consolidadoServico.AdicionarLancamentosAsync(lancamentosAgrupados);
                             }
                         }
                         catch (OperationCanceledException)

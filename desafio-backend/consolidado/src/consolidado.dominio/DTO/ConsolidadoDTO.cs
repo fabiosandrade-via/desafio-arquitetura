@@ -7,6 +7,6 @@ namespace consolidado.dominio.DTO
         public List<LancamentoDTO> Lancamentos { get; set; } = new();
         public decimal? Acumulado { get; set; }
         public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.OK;
-        public string Mensagem { get; set; }
+        public string Mensagem { get; set; } = string.Empty;
     }
 }

@@ -16,7 +16,7 @@ namespace lancamento.integracao
             _logger = logger;
             _configuration = configuration;
         }
-        public async Task EnviarLancamentosApiExternaAsync(List<LancamentoEntity> lancamentos)
+        public async Task EnviarLancamentosApiExternaAsync(List<LancamentoGrupoEntity> lancamentos)
         {
             var json = JsonConvert.SerializeObject(lancamentos);
 

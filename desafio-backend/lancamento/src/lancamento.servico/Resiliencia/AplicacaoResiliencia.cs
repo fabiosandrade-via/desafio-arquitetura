@@ -14,7 +14,7 @@ namespace lancamento.servico.Resiliencia
             _kafkaProdutor = new KafkaProdutor(kafkaSettings);
         }
 
-        public async Task EnviarLancamentosApiExterna(List<LancamentoEntity> lancamentosEntity, ILancamentoApiExterna apiExterna)
+        public async Task EnviarLancamentosApiExterna(List<LancamentoGrupoEntity> lancamentosAgrupados, ILancamentoApiExterna apiExterna)
         {
             ExecucaoPolicy politicaExecucao = new ExecucaoPolicy(apiExterna);
 
@@ -25,7 +25,7 @@ namespace lancamento.servico.Resiliencia
             {
                 try
                 {
-                    await politicaExecucao.ExecutarResilienciaApiAsync(lancamentosEntity);
+                    await politicaExecucao.ExecutarResilienciaApiAsync(lancamentosAgrupados);
                     break;
                 }
                 catch
@@ -36,7 +36,7 @@ namespace lancamento.servico.Resiliencia
 
             if (contLimite == limiteChamadasApi)
             {
-                await _kafkaProdutor.Enviar(lancamentosEntity);
+                await _kafkaProdutor.Enviar(lancamentosAgrupados);
             }
         }
     }

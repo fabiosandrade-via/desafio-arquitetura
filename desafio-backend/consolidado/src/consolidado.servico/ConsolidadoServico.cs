@@ -18,19 +18,23 @@ namespace consolidado.servico
             _consolidadoRepositorio = consolidadoRepositorio;
             _mapper = mapper;
         }
-        public async Task AdicionarLancamentosAsync(List<LancamentoDTO> lancamentos)
+        public async Task AdicionarLancamentosAsync(List<LancamentoGrupoDTO> lancamentoAgrupado)
         {
-            DateTime data = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
-            string dataFormatada = data.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-
-            ConsolidadoEntity consolidadoEntity = await _fluxoCaixa.ObterConsolidadoDiario(lancamentos, data);
-
-            if (await _consolidadoRepositorio.ConsolidadoExisteAsync(dataFormatada) == true)
+            foreach (var lancamento in lancamentoAgrupado)
             {
-                await _consolidadoRepositorio.ExcluirConsolidadoAsync(dataFormatada);
-            }
+                if (lancamento.Id.HasValue)
+                {
+                    ConsolidadoEntity consolidadoEntity = await _fluxoCaixa.ObterConsolidadoDiario(lancamento.Lancamentos, lancamento.Id.Value);
+                    string dataFormatada = lancamento.Id.Value.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-            await _consolidadoRepositorio.AdicionarConsolidadoAsync(dataFormatada, consolidadoEntity);
+                    if (await _consolidadoRepositorio.ConsolidadoExisteAsync(dataFormatada) == true)
+                    {
+                        await _consolidadoRepositorio.ExcluirConsolidadoAsync(dataFormatada);
+                    }
+
+                    await _consolidadoRepositorio.AdicionarConsolidadoAsync(dataFormatada, consolidadoEntity);
+                }
+            }
         }
         public async Task<ConsolidadoDTO?> BuscarConsolidadoAsync(string data)
         {
