@@ -139,8 +139,8 @@ docker-compose up --build
 ### **3️⃣ Acessar a Aplicação**
 
 - **Frontend Angular:** [http://localhost:4200](http://localhost:4200)
-- **Backend Lançamentos:** [http://localhost:8080/api/lancamentos](http://localhost:8080/api/lancamentos)
-- **Backend Consolidação:** [http://localhost:8081/api/lancamentos/consolidado](http://localhost:8081/api/lancamentos/consolidado)
+- **Backend Lançamentos:** http://localhost:8080/swagger/index.html
+- **Backend Consolidado diário:** http://localhost:8081/swagger/index.html
 - **Grafana:** [http://localhost:3000](http://localhost:3000)
 - **Prometheus:** [http://localhost:9090](http://localhost:9090)
 
